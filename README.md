@@ -1,73 +1,158 @@
-# Welcome to your Lovable project
+# Global Sumud Flotilla Tracker
 
-## Project info
+Real-time vessel tracking application for the Global Sumud Flotilla - monitoring 22+ vessels sailing to Gaza.
 
-**URL**: https://lovable.dev/projects/345154e5-7e05-4c71-9afb-59509d0cabe3
+![Global Sumud Flotilla](public/flotilla-logo.png)
 
-## How can I edit this code?
+## 🚢 About
 
-There are several ways of editing your application.
+This application provides live GPS tracking and historical playback of the Global Sumud Flotilla, a coordinated fleet of vessels sailing from Mediterranean ports (Barcelona, Genoa, Menorca, and Bizerte) to Gaza.
 
-**Use Lovable**
+**Features:**
+- 📍 Real-time vessel tracking with GPS coordinates
+- 🗺️ Interactive map with vessel trajectories
+- ⏱️ Historical playback (Sep 1 - Oct 1, 2025)
+- 🔴 Live mode with 3-second updates
+- 📊 Vessel information panel with speed, heading, and tracker IDs
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/345154e5-7e05-4c71-9afb-59509d0cabe3) and start prompting.
+## 🛠️ Tech Stack
 
-Changes made via Lovable will be committed automatically to this repo.
+- **Frontend:** React 18 + TypeScript
+- **Build Tool:** Vite
+- **UI Framework:** Tailwind CSS + shadcn/ui
+- **Mapping:** Leaflet with CartoDB Voyager tiles
+- **State Management:** React hooks
 
-**Use your preferred IDE**
+## 🚀 Getting Started
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+### Prerequisites
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+- Node.js 18+ and npm
 
-Follow these steps:
+### Installation
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+```bash
+# Clone the repository
+git clone <repository-url>
+cd liveflotilla
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+# Install dependencies
+npm install
 
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
+# Start development server
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+The application will be available at `http://localhost:5173` (or the next available port).
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+### Build for Production
 
-**Use GitHub Codespaces**
+```bash
+# Production build
+npm run build
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+# Preview production build
+npm preview
+```
 
-## What technologies are used for this project?
+## 📁 Project Structure
 
-This project is built with:
+```
+src/
+├── components/
+│   ├── MapView.tsx          # Leaflet map with vessel markers
+│   ├── Timeline.tsx         # Historical playback controls
+│   ├── VesselList.tsx       # List of vessels
+│   └── InfoPanel.tsx        # Information panel
+├── services/
+│   └── vesselService.ts     # Core tracking logic & GPS simulation
+├── data/
+│   └── realFlotillaData.ts  # Real vessel data from news sources
+└── pages/
+    └── Index.tsx            # Main application page
+```
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+## 🎯 Key Features
 
-## How can I deploy this project?
+### Interactive Map
+- **Live tracking** of 22 vessels
+- **Trajectory visualization** showing vessel paths
+- **Popup details** with vessel name, speed, heading, and GPS coordinates
+- **CartoDB Voyager** tiles for clean, modern appearance
 
-Simply open [Lovable](https://lovable.dev/projects/345154e5-7e05-4c71-9afb-59509d0cabe3) and click on Share -> Publish.
+### Timeline Controls
+- ▶️ **Play/Pause** - Automatic historical playback
+- 🔴 **LIVE Mode** - Real-time simulation updates
+- 🎚️ **Scrubber** - Manual navigation through history
+- 🕐 **Date/Time Display** - Current position in timeline
 
-## Can I connect a custom domain to my Lovable project?
+### Vessel Information
+Each vessel includes:
+- Name (e.g., Karma, Shireen Abu Akleh, Rachel Corrie)
+- Current GPS coordinates
+- Speed in knots
+- Heading in degrees
+- Garmin tracker ID
+- Departure port and date
 
-Yes, you can!
+## 📊 Data Sources
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+Vessel names and departure information based on:
+- Al Jazeera news reports
+- Wikipedia: Global Sumud Flotilla
+- Official website: globalsumudflotilla.org
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+**Notable Vessels:**
+- Karma, Alma, Familia Madeira (attacked by drones - Sept 2025)
+- Shireen Abu Akleh (Al Jazeera press boat)
+- Rachel Corrie, Ahed Tamimi (named after activists)
+- Spirit of Humanity, Peace Runner
+
+## 🧭 GPS Simulation
+
+Since the official tracker has no public API, this application simulates realistic vessel movement using:
+- **Nautical calculations** (speed in knots, heading in degrees)
+- **Haversine formula** for distance calculations
+- **Realistic variations** (±10° heading, ±1 knot speed)
+- **Historical data generation** (720 points per vessel over 30 days)
+
+Initial positions based on news reports: ~150 nautical miles west of Gaza (approximately 32.0°N, 31.5°E).
+
+## 🔧 Development
+
+```bash
+# Start dev server with hot reload
+npm run dev
+
+# Lint code
+npm run lint
+
+# Build for production
+npm run build
+
+# Build for development (with source maps)
+npm run build:dev
+```
+
+## 📱 Browser Support
+
+- Chrome/Edge 90+
+- Firefox 88+
+- Safari 14+
+
+## 📄 License
+
+This project is for educational and monitoring purposes.
+
+## 🤝 Related Projects
+
+- [Global Sumud Flotilla Official Site](https://globalsumudflotilla.org/)
+- [Forensic Architecture Handala Tracker](https://forensic-architecture.org/)
+
+## ⚠️ Disclaimer
+
+This is an independent tracking simulation. For official updates, visit [globalsumudflotilla.org](https://globalsumudflotilla.org/).
+
+---
+
+Built with ❤️ for peace and humanitarian aid
