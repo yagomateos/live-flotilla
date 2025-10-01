@@ -7,20 +7,33 @@ import { vesselService } from '@/services/vesselService';
 
 const Index = () => {
   const [vessels, setVessels] = useState(vesselService.getVessels());
+  const [isLiveMode, setIsLiveMode] = useState(false);
 
-  // Fetch and update vessel positions in real-time
+  // Handle timeline changes
+  const handleTimelineChange = (timestamp: Date | null) => {
+    setIsLiveMode(!timestamp); // If no timestamp, we're in live mode
+
+    if (timestamp) {
+      // Show historical data
+      const historicalVessels = vesselService.getVesselsAtTime(timestamp);
+      setVessels(historicalVessels);
+    }
+  };
+
+  // Live mode: update vessel positions in real-time
   useEffect(() => {
-    // Initial fetch
-    const fetchData = async () => {
-      const data = await vesselService.fetchVesselData();
-      setVessels(data);
-    };
+    if (isLiveMode) {
+      const fetchData = async () => {
+        const data = await vesselService.fetchVesselData();
+        setVessels(data);
+      };
 
-    // Update every 3 seconds for realistic movement
-    const interval = setInterval(fetchData, 3000);
+      // Update every 3 seconds for realistic movement
+      const interval = setInterval(fetchData, 3000);
 
-    return () => clearInterval(interval);
-  }, []);
+      return () => clearInterval(interval);
+    }
+  }, [isLiveMode]);
 
   return (
     <div className="flex flex-col h-screen w-full bg-background">
@@ -38,7 +51,7 @@ const Index = () => {
         </div>
       </div>
 
-      <Timeline />
+      <Timeline onTimeChange={handleTimelineChange} />
     </div>
   );
 };

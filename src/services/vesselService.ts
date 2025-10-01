@@ -16,52 +16,49 @@ export interface Vessel {
   trajectory?: [number, number][]; // Historical positions for trail visualization
 }
 
-// Initial vessel data from Global Sumud Flotilla
+export interface VesselHistoryPoint {
+  position: [number, number];
+  timestamp: Date;
+  speed: number;
+  heading: number;
+  status: 'sailing' | 'anchored' | 'docked';
+}
+
+export interface VesselHistory {
+  id: number;
+  name: string;
+  location: string;
+  trackerId: string;
+  history: VesselHistoryPoint[];
+}
+
+// Initial vessel data - positioned in Mediterranean Sea west of Gaza
+// Based on news reports: flotilla was ~150 nautical miles from Gaza coast
+// Gaza coast is at approximately 31.5°N, 34.45°E
+// 150 nautical miles west = approximately 32.0°N, 31.5°E
 const initialVesselsData: Vessel[] = [
-  { id: 1, name: 'Adagio', location: 'Beit Hanoun', position: [31.5123, 32.0], status: 'sailing', speed: 8, heading: 90 },
-  { id: 2, name: 'Adara', location: 'Beit Lahia', position: [31.5420, 31.9], status: 'sailing', speed: 7, heading: 85 },
-  { id: 3, name: 'Ahed Tamimi', location: '', position: [31.5531, 32.1], status: 'sailing', speed: 9, heading: 95 },
-  { id: 4, name: 'All In', location: 'Khan Yunis', position: [31.3478, 31.8], status: 'sailing', speed: 6, heading: 80 },
-  { id: 5, name: 'Allakatalla', location: 'Rafah', position: [31.2914, 31.7], status: 'sailing', speed: 7, heading: 75 },
-  { id: 6, name: 'Alma', location: 'Deir al-Balah', position: [31.4168, 31.85], status: 'sailing', speed: 8, heading: 88 },
-  { id: 7, name: 'Amsterdam', location: 'Al Tantura', position: [31.4991, 32.05], status: 'sailing', speed: 9, heading: 92 },
-  { id: 8, name: 'Aurora', location: 'Heidi sails to Gaza', position: [31.3982, 31.82], status: 'sailing', speed: 7, heading: 83 },
-  { id: 9, name: 'Australe', location: '', position: [31.5210, 31.95], status: 'sailing', speed: 8, heading: 87 },
-  { id: 10, name: 'Captain Nikos', location: 'Akka', position: [32.9330, 32.5], status: 'sailing', speed: 6, heading: 180 },
-  { id: 11, name: 'Catalina', location: 'Al Khalil', position: [31.5301, 32.15], status: 'sailing', speed: 9, heading: 94 },
-  { id: 12, name: 'Dir yassine', location: 'Deir Yassin', position: [31.7915, 32.3], status: 'sailing', speed: 7, heading: 135 },
-  { id: 13, name: 'Estrella Y Manuel', location: 'Al Lydd', position: [31.9497, 32.4], status: 'sailing', speed: 8, heading: 145 },
-  { id: 14, name: 'Fair Lady', location: 'Al Qudse', position: [31.7767, 32.25], status: 'sailing', speed: 6, heading: 130 },
-  { id: 15, name: 'Florida', location: 'Arwas al Sharif', position: [31.9270, 32.35], status: 'sailing', speed: 7, heading: 140 },
-  { id: 16, name: 'Free Willy', location: 'Tilza - Gaza city', position: [31.5234, 31.98], status: 'sailing', speed: 8, heading: 89 },
-  { id: 17, name: 'Grande Blu', location: 'Arhia', position: [31.9110, 32.38], status: 'sailing', speed: 9, heading: 142 },
-  { id: 18, name: 'Hio', location: 'Beit Lahm', position: [31.7050, 32.22], status: 'sailing', speed: 7, heading: 125 },
-  { id: 19, name: 'Huga', location: 'Haifa', position: [32.8191, 32.48], status: 'sailing', speed: 6, heading: 175 },
-  { id: 20, name: 'Inana', location: 'Jenia', position: [32.4606, 32.7], status: 'sailing', speed: 8, heading: 160 },
-  { id: 21, name: 'Jeannot III', location: 'Nablus', position: [32.2211, 32.65], status: 'sailing', speed: 7, heading: 155 },
-  { id: 22, name: 'Karma', location: 'Yafa', position: [32.0853, 32.42], status: 'sailing', speed: 9, heading: 147 },
-  { id: 23, name: 'Mango', location: 'Hind - Tal al Hawa - Gaza', position: [31.4992, 31.93], status: 'sailing', speed: 8, heading: 86 },
-  { id: 24, name: 'Maria Cristina', location: 'Tulkarem', position: [32.3115, 32.55], status: 'sailing', speed: 7, heading: 152 },
-  { id: 25, name: 'Marinette', location: 'Safad', position: [32.9658, 32.85], status: 'sailing', speed: 6, heading: 185 },
-  { id: 26, name: 'Meteque', location: 'Qalqilya', position: [32.1896, 32.45], status: 'sailing', speed: 8, heading: 150 },
-  { id: 27, name: 'Narigado', location: '', position: [31.5555, 32.08], status: 'sailing', speed: 9, heading: 93 },
-  { id: 28, name: 'Nefertiti', location: 'Al Ramla', position: [31.9290, 32.39], status: 'sailing', speed: 7, heading: 143 },
-  { id: 29, name: 'Olive Branch', location: '', position: [31.4682, 31.88], status: 'sailing', speed: 8, heading: 84 },
-  { id: 30, name: 'Peace Runner', location: '', position: [31.5834, 31.97], status: 'sailing', speed: 7, heading: 88 },
-  { id: 31, name: 'Pisces', location: 'Sabra & Shatila', position: [33.8547, 33.1], status: 'sailing', speed: 6, heading: 200 },
-  { id: 32, name: 'Queen', location: '', position: [31.5012, 31.96], status: 'sailing', speed: 8, heading: 87 },
-  { id: 33, name: 'Rachel Corrie', location: '', position: [31.4445, 31.87], status: 'sailing', speed: 9, heading: 82 },
-  { id: 34, name: 'Raggamuffin', location: 'Rahat', position: [31.3931, 32.18], status: 'sailing', speed: 7, heading: 100 },
-  { id: 35, name: 'Saphira', location: '', position: [31.5223, 31.99], status: 'sailing', speed: 8, heading: 88 },
-  { id: 36, name: 'Sea Gull', location: '', position: [31.4956, 31.92], status: 'sailing', speed: 7, heading: 85 },
-  { id: 37, name: 'Sebbe Als', location: 'Taanekh', position: [32.5589, 32.72], status: 'sailing', speed: 6, heading: 165 },
-  { id: 38, name: 'Sentiero Selvaggio', location: '', position: [31.5134, 31.94], status: 'sailing', speed: 8, heading: 86 },
-  { id: 39, name: 'Shaima', location: 'Al Jabalia', position: [31.5320, 32.02], status: 'sailing', speed: 9, heading: 91 },
-  { id: 40, name: 'Spirit of Humanity', location: '', position: [31.4734, 31.91], status: 'sailing', speed: 7, heading: 85 },
-  { id: 41, name: 'Taurus', location: '', position: [31.5456, 32.06], status: 'sailing', speed: 8, heading: 92 },
-  { id: 42, name: 'Unity', location: '', position: [31.5089, 32.03], status: 'sailing', speed: 9, heading: 90 },
-  { id: 43, name: 'Victoria', location: 'Bir al-Saba', position: [31.2519, 32.2], status: 'sailing', speed: 7, heading: 105 },
-  { id: 44, name: 'Zephyr', location: '', position: [31.4867, 31.89], status: 'sailing', speed: 8, heading: 84 },
+  { id: 1, name: 'Adagio', location: 'Mediterranean Sea', position: [32.1, 31.6], status: 'sailing', speed: 8, heading: 90 },
+  { id: 2, name: 'Adara', location: 'Mediterranean Sea', position: [32.0, 31.4], status: 'sailing', speed: 7, heading: 85 },
+  { id: 3, name: 'Ahed Tamimi', location: 'Mediterranean Sea', position: [32.2, 31.8], status: 'sailing', speed: 9, heading: 95 },
+  { id: 4, name: 'Alma', location: 'Mediterranean Sea', position: [31.9, 31.3], status: 'sailing', speed: 8, heading: 88 },
+  { id: 5, name: 'Amsterdam', location: 'Mediterranean Sea', position: [32.15, 31.7], status: 'sailing', speed: 9, heading: 92 },
+  { id: 6, name: 'Aurora', location: 'Mediterranean Sea', position: [31.95, 31.35], status: 'sailing', speed: 7, heading: 83 },
+  { id: 7, name: 'Captain Nikos', location: 'Mediterranean Sea', position: [32.3, 31.9], status: 'sailing', speed: 6, heading: 100 },
+  { id: 8, name: 'Catalina', location: 'Mediterranean Sea', position: [32.05, 31.5], status: 'sailing', speed: 9, heading: 94 },
+  { id: 9, name: 'Familia Madeira', location: 'Mediterranean Sea', position: [31.85, 31.2], status: 'sailing', speed: 6.5, heading: 80 },
+  { id: 10, name: 'Free Willy', location: 'Mediterranean Sea', position: [32.12, 31.62], status: 'sailing', speed: 8, heading: 89 },
+  { id: 11, name: 'Grande Blu', location: 'Mediterranean Sea', position: [32.25, 31.85], status: 'sailing', speed: 9, heading: 98 },
+  { id: 12, name: 'Karma', location: 'Mediterranean Sea', position: [32.08, 31.55], status: 'sailing', speed: 9, heading: 93 },
+  { id: 13, name: 'Mango', location: 'Mediterranean Sea', position: [31.98, 31.45], status: 'sailing', speed: 8, heading: 86 },
+  { id: 14, name: 'Olive Branch', location: 'Mediterranean Sea', position: [32.02, 31.52], status: 'sailing', speed: 8, heading: 84 },
+  { id: 15, name: 'Peace Runner', location: 'Mediterranean Sea', position: [32.18, 31.75], status: 'sailing', speed: 7, heading: 88 },
+  { id: 16, name: 'Rachel Corrie', location: 'Mediterranean Sea', position: [31.92, 31.38], status: 'sailing', speed: 9, heading: 82 },
+  { id: 17, name: 'Sentiero Selvaggio', location: 'Mediterranean Sea', position: [32.06, 31.58], status: 'sailing', speed: 8, heading: 86 },
+  { id: 18, name: 'Shireen Abu Akleh', location: 'Mediterranean Sea', position: [32.14, 31.65], status: 'sailing', speed: 7, heading: 90 },
+  { id: 19, name: 'Spirit of Humanity', location: 'Mediterranean Sea', position: [32.0, 31.48], status: 'sailing', speed: 7, heading: 85 },
+  { id: 20, name: 'Unity', location: 'Mediterranean Sea', position: [32.10, 31.60], status: 'sailing', speed: 9, heading: 90 },
+  { id: 21, name: 'Victoria', location: 'Mediterranean Sea', position: [31.88, 31.25], status: 'sailing', speed: 7, heading: 87 },
+  { id: 22, name: 'Zephyr', location: 'Mediterranean Sea', position: [32.04, 31.54], status: 'sailing', speed: 8, heading: 84 },
 ];
 
 // Gaza destination coordinates (approximate)
@@ -113,8 +110,11 @@ function addRealisticVariation(vessel: Vessel): Vessel {
 
 class VesselService {
   private vessels: Vessel[] = [];
+  private vesselHistories: Map<number, VesselHistory> = new Map();
   private lastUpdateTime: number = Date.now();
   private readonly MAX_TRAJECTORY_POINTS = 50; // Keep last 50 positions for trail
+  private readonly MISSION_START_DATE = new Date('2025-09-01T00:00:00Z');
+  private readonly MISSION_END_DATE = new Date('2025-10-01T00:00:00Z');
 
   constructor() {
     // Initialize with data including Garmin tracker IDs
@@ -124,6 +124,53 @@ class VesselService {
       trackerId: `GARMIN-${v.id.toString().padStart(4, '0')}`,
       trajectory: [v.position], // Initialize trajectory with starting position
     }));
+
+    // Generate historical data for each vessel
+    this.generateHistoricalData();
+  }
+
+  // Generate historical movement data for the mission period
+  private generateHistoricalData(): void {
+    const totalDays = 30; // 30 days mission
+    const pointsPerDay = 24; // One point per hour
+
+    this.vessels.forEach(vessel => {
+      const history: VesselHistoryPoint[] = [];
+      let currentPos = vessel.position;
+      let currentHeading = vessel.heading || 90;
+      let currentSpeed = vessel.speed || 7;
+
+      for (let day = 0; day < totalDays; day++) {
+        for (let hour = 0; hour < pointsPerDay; hour++) {
+          const timestamp = new Date(this.MISSION_START_DATE);
+          timestamp.setDate(timestamp.getDate() + day);
+          timestamp.setHours(hour);
+
+          // Calculate new position (3600 seconds = 1 hour)
+          currentPos = calculateNewPosition(currentPos, currentSpeed, currentHeading, 3600);
+
+          // Add small variations
+          currentHeading = (currentHeading + (Math.random() - 0.5) * 10 + 360) % 360;
+          currentSpeed = Math.max(4, Math.min(12, currentSpeed + (Math.random() - 0.5) * 1));
+
+          history.push({
+            position: currentPos,
+            timestamp,
+            speed: currentSpeed,
+            heading: currentHeading,
+            status: 'sailing',
+          });
+        }
+      }
+
+      this.vesselHistories.set(vessel.id, {
+        id: vessel.id,
+        name: vessel.name,
+        location: vessel.location,
+        trackerId: vessel.trackerId || '',
+        history,
+      });
+    });
   }
 
   // Get all vessels
@@ -186,6 +233,80 @@ class VesselService {
   getVesselTrajectory(id: number): [number, number][] {
     const vessel = this.getVesselById(id);
     return vessel?.trajectory || [];
+  }
+
+  // Get vessels at a specific date/time
+  getVesselsAtTime(timestamp: Date): Vessel[] {
+    const vessels: Vessel[] = [];
+
+    this.vesselHistories.forEach((history) => {
+      // Find the closest historical point to the requested timestamp
+      const historyPoint = this.findClosestHistoryPoint(history.history, timestamp);
+
+      if (historyPoint) {
+        // Get trajectory up to this point
+        const trajectory = history.history
+          .filter(h => h.timestamp <= timestamp)
+          .map(h => h.position);
+
+        vessels.push({
+          id: history.id,
+          name: history.name,
+          location: history.location,
+          position: historyPoint.position,
+          status: historyPoint.status,
+          speed: historyPoint.speed,
+          heading: historyPoint.heading,
+          trackerId: history.trackerId,
+          lastUpdate: historyPoint.timestamp,
+          trajectory: trajectory.slice(-this.MAX_TRAJECTORY_POINTS),
+        });
+      }
+    });
+
+    return vessels;
+  }
+
+  // Find closest history point to a given timestamp
+  private findClosestHistoryPoint(
+    history: VesselHistoryPoint[],
+    timestamp: Date
+  ): VesselHistoryPoint | null {
+    if (history.length === 0) return null;
+
+    // If timestamp is before first point, return first point
+    if (timestamp < history[0].timestamp) {
+      return history[0];
+    }
+
+    // If timestamp is after last point, return last point
+    if (timestamp > history[history.length - 1].timestamp) {
+      return history[history.length - 1];
+    }
+
+    // Binary search for closest point
+    let left = 0;
+    let right = history.length - 1;
+
+    while (left < right) {
+      const mid = Math.floor((left + right) / 2);
+      if (history[mid].timestamp <= timestamp) {
+        left = mid + 1;
+      } else {
+        right = mid;
+      }
+    }
+
+    // Return the point just before or at the timestamp
+    return history[Math.max(0, left - 1)];
+  }
+
+  // Get mission date range
+  getMissionDateRange(): { start: Date; end: Date } {
+    return {
+      start: this.MISSION_START_DATE,
+      end: this.MISSION_END_DATE,
+    };
   }
 }
 
